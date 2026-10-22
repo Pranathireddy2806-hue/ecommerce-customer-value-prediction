@@ -6,6 +6,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 df = pd.read_csv("data/Ecommerce Customers.csv")
 print(df.columns)
 print("\n")
+
 print(df.info())
 X = df[['Avg. Session Length',
         'Time on App',
