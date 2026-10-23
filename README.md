@@ -1,6 +1,6 @@
-I analyzed the available project files and created a clean README for the project.
 
-````markdown
+
+
 # E-Commerce Customer Value Prediction
 
 A machine learning project that predicts a customer's yearly spending based on customer behavior and engagement metrics. The project uses a Linear Regression model and evaluates performance using MAE, MSE, and R² score.
