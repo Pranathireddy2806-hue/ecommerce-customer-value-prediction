@@ -1,6 +1,7 @@
 I analyzed the available project files and created a clean README for the project.
 
-````markdown
+
+
 # E-Commerce Customer Value Prediction
 
 A machine learning project that predicts a customer's yearly spending based on customer behavior and engagement metrics. The project uses a Linear Regression model and evaluates performance using MAE, MSE, and R² score.
@@ -22,200 +23,154 @@ The dataset used in this project is:
 
 - `data/Ecommerce Customers.csv`
 
-| Column | Type | Used in model? | Description |
-|---|---|---|---|
-| Email | text | ❌ | Customer email |
-| Address | text | ❌ | Customer address |
-| Avatar | text | ❌ | Avatar colour name |
-| **Avg. Session Length** | float | ✅ Feature | Average in-store style session length (minutes) |
-| **Time on App** | float | ✅ Feature | Average minutes per day on the mobile app |
-| **Time on Website** | float | ✅ Feature | Average minutes per day on the website |
-| **Length of Membership** | float | ✅ Feature | Number of years as a member |
-| **Yearly Amount Spent** | float | 🎯 Target | Money spent per year (what we predict) |
+It contains customer-related attributes and the target value:
+- `Yearly Amount Spent`
 
-Text columns are not used because they carry no numeric signal for Linear Regression.
+The features selected for prediction are:
 
----
-
-## 📁 Project Structure
-
+```python
+X = df[['Avg. Session Length',
+        'Time on App',
+        'Time on Website',
+        'Length of Membership']]
 ```
-e-commerce_customer_value/
-│
+
+The target variable is:
+
+```python
+y = df['Yearly Amount Spent']
+```
+
+## Project Structure
+
+```text
+e-commerce_customer_value_prediction/
 ├── data/
-│   └── Ecommerce Customers.csv        # Dataset
-│
+│   └── Ecommerce Customers.csv
 ├── images/
-│   └── customer_value_prediction.png  # Plot saved by the training script
-│
+│   └── customer_value_prediction.png
 ├── src/
-│   └── customer_value_prediction.py   # Command-line training + evaluation script
-│
-├── app.py                             # Streamlit dashboard
-├── requirements.txt                   # Python dependencies
-├── .gitignore                         # Files Git should ignore
-└── README.md                          # Project documentation
+│   └── customer_value_prediction.py
+├── README.md
+└── requirements.txt   (if added later)
 ```
 
-> `requirements.txt` must stay in the project root so `pip install -r requirements.txt` and Streamlit Cloud can find it.
+## Model Used
 
----
+This project uses:
 
-## ⚙️ How It Works
+- `LinearRegression` from `scikit-learn`
 
-```
-CSV data ─► select features (X) and target (y) ─► 80/20 train-test split
-        ─► train LinearRegression ─► predict on test set
-        ─► evaluate (MAE, MSE, RMSE, R²) ─► predict for new customers
-```
+The workflow is:
 
-1. **Load** the CSV with pandas.
-2. **Select features**: `Avg. Session Length`, `Time on App`, `Time on Website`, `Length of Membership`.
-3. **Split** the data into 80% training and 20% testing (`random_state=42` for reproducibility).
-4. **Train** a `LinearRegression` model.
-5. **Evaluate** it with regression metrics.
-6. **Predict** the yearly spend of a new customer.
+1. Load the dataset
+2. Split features and target
+3. Train the model on training data
+4. Predict on test data
+5. Calculate evaluation metrics
+6. Predict value for a new customer
+7. Save the actual-vs-predicted plot
 
-The model learns an equation of the form:
+## Workflow Summary
 
-```
-Yearly Spend = intercept + (b1 × Session Length) + (b2 × Time on App)
-                         + (b3 × Time on Website) + (b4 × Length of Membership)
-```
+The script performs the following tasks:
 
-Each coefficient tells you how many dollars of yearly spend change when that feature increases by 1 unit while the others stay the same.
+- Reads the CSV file
+- Displays dataset information and column names
+- Splits the data into training and testing sets
+- Trains the regression model
+- Evaluates model accuracy with:
+  - Mean Absolute Error (MAE)
+  - Mean Squared Error (MSE)
+  - R² Score
+- Makes a prediction for a sample new customer
+- Generates a scatter plot comparing actual and predicted values
+- Saves the chart as:
+  - `images/customer_value_prediction.png`
 
----
+## Dependencies
 
-## 🛠️ Installation
-
-### Prerequisites
-
-- Python 3.9 or newer → check with `python --version`
-- Git → check with `git --version`
-
-### Steps
+Install the required packages using:
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git
-cd YOUR-REPO-NAME
-
-# 2. Create a virtual environment
-python -m venv venv
-
-# 3. Activate it
-source venv/bin/activate          # Mac / Linux
-venv\Scripts\activate             # Windows (Command Prompt / VS Code terminal)
-.\venv\Scripts\Activate.ps1       # Windows PowerShell
-
-# 4. Install dependencies
-pip install -r requirements.txt
+pip install pandas matplotlib scikit-learn
 ```
 
----
+## How to Run
 
-## ▶️ Usage
-
-> Always run commands from the **project root folder** so the relative paths (`data/...`, `images/...`) work.
-
-### Option 1: Interactive dashboard (recommended)
-
-```bash
-streamlit run app.py
-```
-
-Your browser opens at **http://localhost:8501**. Press `Ctrl + C` in the terminal to stop it.
-
-### Option 2: Command-line training script
+From the project root, run:
 
 ```bash
 python src/customer_value_prediction.py
 ```
 
-This prints the dataset info, model coefficients, evaluation metrics and a sample prediction. It also saves the actual vs predicted plot to `images/customer_value_prediction.png`.
+## Example Output
 
----
+The script prints:
 
-## 📐 Model Evaluation
+- Dataset columns
+- Data shape
+- Model coefficients
+- Intercept
+- Prediction values
+- Evaluation results like:
 
-| Metric | Meaning | Better is |
-|---|---|---|
-| **MAE** (Mean Absolute Error) | Average size of the prediction error, in dollars | Lower |
-| **MSE** (Mean Squared Error) | Average squared error; penalises big mistakes | Lower |
-| **RMSE** | Square root of MSE, in dollars | Lower |
-| **R² Score** | Share of the variation in spending explained by the model (1.0 = perfect) | Higher |
+```text
+MAE: ...
+MSE: ...
+R2 Score: ...
+```
 
-Fill in your own results after running the project:
+It also displays and saves a plot titled:
 
-| Metric | Value |
-|---|---|
-| MAE | _your value_ |
-| MSE | _your value_ |
-| RMSE | _your value_ |
-| R² | _your value_ |
+```text
+Actual vs Predicted Customer Value
+```
 
----
+## Model Evaluation
 
-## 🖥️ Dashboard Guide
+The model is evaluated with the following metrics:
 
-### Sidebar
-- **Upload a CSV**: use your own data (must contain the same column names).
-- **Test set size**: fraction of data held back for testing (10% to 50%).
-- **Random seed**: change it to see how the split affects results.
+- MAE: measures the average absolute prediction error
+- MSE: measures the average squared error
+- R² Score: indicates how well the model explains variance in the target variable
 
-### 🔮 Predict tab
-1. Set the four sliders. They start at the dataset averages.
-2. The predicted yearly spend and the difference from the average appear instantly.
-3. The gauge is coloured by segment: red (below average), yellow (average), green (high value).
+A higher R² value generally indicates a better fit.
 
-### 📈 Model Performance tab
-- Metric cards for R², MAE, MSE and RMSE.
-- **Actual vs Predicted**: points close to the red dashed line mean accurate predictions.
-- **Residuals**: a bell shape centred at 0 means the errors are well behaved.
-- **Coefficients**: the longest bar is the feature with the biggest effect on spending.
+## Sample Prediction
 
-### 🔎 Data Explorer tab
-- First 20 rows of the data.
-- **Correlation heatmap**: shows which features move together with spending.
-- **Scatter plot with trendline**: choose any feature from the dropdown.
+The script includes a sample customer profile:
 
----
+```python
+new_customer = pd.DataFrame({
+    'Avg. Session Length': [34.5],
+    'Time on App': [12.2],
+    'Time on Website': [39.5],
+    'Length of Membership': [4.5]
+})
+```
 
-## 🌐 Deployment (Streamlit Community Cloud)
+The model predicts the yearly customer value for this profile and prints the result.
 
-1. Push the project to a **public GitHub repository**.
-2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub.
-3. Click **New app** and select your repository.
-4. Set **Branch** to `main` and **Main file path** to `app.py`.
-5. Click **Deploy**.
+## Insights
 
-Make sure `requirements.txt` is in the root and the CSV file is committed, otherwise the deployed app can't load the data.
+This project demonstrates how customer engagement metrics can be used to estimate revenue contribution. In a real-world setting, the model can help businesses:
 
----
+- Identify high-value customers
+- Improve retention strategies
+- Personalize marketing campaigns
+- Forecast customer lifetime value
 
-## 🧯 Troubleshooting
+## Possible Improvements
 
-| Problem | Fix |
-|---|---|
-| `FileNotFoundError: data/Ecommerce Customers.csv` | Run from the project root, and check the file name and folder |
-| `FileNotFoundError` when saving the plot | Make sure the `images/` folder exists (`mkdir images`) |
-| `ModuleNotFoundError` | Activate your virtual environment, then run `pip install -r requirements.txt` |
-| `streamlit: command not found` | Use `python -m streamlit run app.py` |
-| PowerShell blocks activation script | Run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, or use Command Prompt |
-| Red squiggles in VS Code | Select the right interpreter: `Ctrl+Shift+P` → *Python: Select Interpreter* → pick `venv` |
-| Port 8501 already in use | Run `streamlit run app.py --server.port 8502` |
+To improve the model further, you can consider:
 
----
+- Adding more relevant customer features
+- Trying other regression models such as Random Forest or XGBoost
+- Performing feature engineering
+- Scaling features if needed
+- Validating with cross-validation
 
-## 🚀 Future Improvements
+## Author
 
-- Compare more models (Ridge, Lasso, Random Forest, Gradient Boosting)
-- Add cross-validation and hyperparameter tuning
-- Add feature scaling and show standardised coefficients
-- Batch predictions: upload a CSV and download predictions
-- Save the trained model with `joblib` instead of retraining on every run
-- Add unit tests and a GitHub Actions workflow
-
----
-
+This project was created for e-commerce customer value prediction using supervised learning.
