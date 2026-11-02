@@ -1,51 +1,26 @@
-# 🛍️ E-commerce Customer Spend Predictor
+I analyzed the available project files and created a clean README for the project.
 
-A machine learning project that predicts how much a customer will spend per year on an e-commerce platform, using **Linear Regression**. It includes a command-line training script and an interactive, colourful **Streamlit dashboard**.
+````markdown
+# E-Commerce Customer Value Prediction
 
----
+A machine learning project that predicts a customer's yearly spending based on customer behavior and engagement metrics. The project uses a Linear Regression model and evaluates performance using MAE, MSE, and R² score.
 
-## 🔍 Overview
+## Project Overview
 
-An online store wants to know which customers are likely to spend the most, so it can decide where to focus its effort: improve the mobile app, improve the website, or invest in customer loyalty.
+This project analyzes customer data from an e-commerce store and predicts the `Yearly Amount Spent` using features such as:
 
-This project:
+- Avg. Session Length
+- Time on App
+- Time on Website
+- Length of Membership
 
-- trains a **Linear Regression** model on customer behaviour data,
-- evaluates it using **MAE, MSE, RMSE and R²**,
-- predicts the **Yearly Amount Spent** for a new customer,
-- shows everything in an **interactive dashboard**.
+The model is trained using a train-test split and then used to estimate the value of a new customer based on similar inputs.
 
----
+## Dataset
 
-## ✨ Features
+The dataset used in this project is:
 
-| Feature | Description |
-|---|---|
-| 🔮 **Live prediction** | Move sliders for 4 customer attributes and instantly see the predicted yearly spend |
-| 🎯 **Customer segmentation** | Labels the customer as high-value, average or below-average compared to the dataset mean |
-| 📈 **Model performance** | R², MAE, MSE and RMSE cards, actual vs predicted plot, residuals histogram |
-| ⚖️ **Feature impact** | Bar chart of the model coefficients showing which feature drives spending most |
-| 🔎 **Data explorer** | Dataset preview, correlation heatmap and feature vs spend scatter plots with a trendline |
-| ⚙️ **Adjustable training** | Change the test-set size and random seed from the sidebar |
-| 📤 **CSV upload** | Use your own dataset with the same column names |
-
----
-
-## 🧰 Tech Stack
-
-- **Python 3.9+**
-- **pandas / NumPy**: data handling
-- **scikit-learn**: model training and metrics
-- **Matplotlib**: static plot saved by the training script
-- **Plotly**: interactive charts in the dashboard
-- **statsmodels**: trendlines in Plotly scatter plots
-- **Streamlit**: web interface
-
----
-
-## 📊 Dataset
-
-File: `data/Ecommerce Customers.csv`
+- `data/Ecommerce Customers.csv`
 
 | Column | Type | Used in model? | Description |
 |---|---|---|---|
